@@ -1,21 +1,20 @@
 # Global Working Rules
 
-One file for Claude Code, Codex and Gemini/Antigravity. Project facts live in each repo's own `AGENTS.md`. Long procedures live in skills (`~/.claude/skills`, loaded on demand) — not here.
+One file for Claude Code, Codex and Gemini/Antigravity. Project facts live in each repo's own `AGENTS.md`. Long procedures live in skills (loaded on demand; installed into `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/config/skills`) — not here.
 
 ## Authority (highest first)
 1. The user's current explicit instruction.
-2. An accepted tracker/spec.
+2. An approved plan.
 3. Live code and config.
 4. The repo's `AGENTS.md`, then `docs/agent-memory/` (read `INDEX.md` first, load only what the task needs).
 5. Prior conversation/memory. 6. Assumptions.
 
 Live code beats memory. If they conflict, say so; update memory only after the new understanding is confirmed. Memory never authorizes implementation.
 
-## Working loop: Analyse -> Explain -> (Tracker) -> Implement
-1. **Analyse.** Read code, callers, consumers, tests, persisted data. No edits. Investigate on your own; don't stop after each file. For non-trivial behavior changes use the impact-analysis skill.
-2. **Explain.** State scope in chat: in, out, approach, risks. **Gate: wait for an explicit "proceed" / "go ahead" / "implement".** Approval covers only the accepted slice; if scope grows, state it and wait again.
-3. **Tracker.** Only if the user asked or the work is multi-slice / multi-session. One page: Goal, Scope, Acceptance Criteria, Slices (implementation-tracker skill).
-4. **Implement.** Build the approved slice without asking per edit. Stop only to change scope, the requested mechanism, a shared contract, or an out-of-scope area. **Gate: every acceptance criterion names the command or test that proved it; anything not run says "not verified".**
+## Working loop: Analyse -> Plan -> Implement -> Prove
+1. **Analyse.** Read code, callers, consumers, tests, persisted data. No edits. Investigate on your own; don't stop after each file. Bugs: fix-bug skill.
+2. **Plan.** Small change: state scope in chat (in, out, approach, risks). Bigger change: plan skill (one short file, steps with their proof). **Gate: wait for an explicit "proceed" / "go ahead" / "implement".** Approval covers only the accepted steps; if scope grows, state it and wait again.
+3. **Implement and prove.** Build the approved steps without asking per edit. Stop only to change scope, the requested mechanism, a shared contract, or an out-of-scope area. **Gate: a step is done only when the test or command that proved it is named with its result; anything not run says "not verified".** Completion is the deliverable, not documents about it.
 
 "Stop" / "don't do anything" holds until the user lifts it.
 
@@ -29,7 +28,7 @@ Live code beats memory. If they conflict, say so; update memory only after the n
 - Touch only what the approved request needs. No bundled cleanup, redesign, or speculative improvements. Report adjacent issues separately; they are not authorization.
 - If the user names a mechanism (endpoint, route, library, field, file, component), that mechanism is part of the acceptance criteria. Don't substitute an equivalent. If something else looks better, say so and ask.
 - Before changing a shared artifact, inspect its real callers.
-- Trackers: only when the user asks, or the work is genuinely multi-slice / multi-session. Small tasks are done in chat. "Epic" means several related tickets, not one bullet.
+- No trackers, status files, or progress documents. A plan file is deleted when its steps are proven; durable facts go to `docs/agent-memory/`.
 - Before calling something a bug because a pattern is missing (e.g. no server-side auth), check whether sibling services deliberately do the same. Don't add new server-side authorization without checking first.
 
 ## Git and safety
@@ -55,5 +54,5 @@ Live code beats memory. If they conflict, say so; update memory only after the n
 - Don't spawn subagents unless asked or the task is clearly parallel research.
 
 ## Skills (load on demand, not by default)
-`impact-analysis`, `implementation-tracker`, `tdd`, `root-cause`, `performance`, `simplify`, `frontend` and `playbooks` (project-specific, provided by the workspace repo), `attendance-calculation-policy-analysis`.
-Routing: small backend change → tdd, simplify. Non-trivial → impact-analysis, tdd, simplify. Bug → root-cause first. Large/multi-session → add implementation-tracker. Frontend → frontend, simplify, then E2E.
+`plan`, `fix-bug`, `tdd`, `simplify`, `agent-memory`, `performance`, `attendance-calculation-policy-analysis`; `frontend` and `playbooks` when the workspace provides them.
+Routing: bug → fix-bug (+ tdd for backend). Change → plan + tdd (backend) or plan + E2E (frontend). Before commit → simplify. Learned a durable fact → agent-memory. Slow/timeouts → performance.

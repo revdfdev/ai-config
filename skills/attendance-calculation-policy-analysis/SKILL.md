@@ -5,11 +5,11 @@ description: Analyse new or changed attendance calculation policies involving sh
 
 # Attendance Calculation Policy Analysis
 
-Use this skill before changing an attendance calculation model. The outcome is a concise, evidence-backed policy and compatibility analysis that an implementation tracker can use.
+Use this skill before changing an attendance calculation model. The outcome is a concise, evidence-backed policy and compatibility analysis that a plan can be built from.
 
 ## Read-only analysis first
 
-Read the active tracker, relevant repository rules, current diff, and only the directly related tests before proposing implementation. Trace the actual flow:
+Read the active plan (if any), relevant repository rules, current diff, and only the directly related tests before proposing implementation. Trace the actual flow:
 
 `device ingest → punch resolution → canonical punches → schedule/roster → date selection → pairing → attendance status/OT → corrections → live/register summaries → payroll handoff → UI`
 
@@ -50,19 +50,17 @@ Before accepting the design, identify whether a new mode affects:
 
 Record unresolved policy choices as decisions. Do not invent limits, rounding, special-day, directionless-pairing, approval, or payroll-revision policies.
 
-## Tracker output
+## Plan output
 
-For genuinely multi-repository or multi-session work, produce a compact epic-based tracker rather than a point-by-point research transcript. Keep raw comparison detail in a separate review note only when it will be used again.
-
-Use epics shaped around real ownership boundaries, typically:
+Turn the analysis into a plan (plan skill) whose steps follow real ownership boundaries, typically:
 
 1. Rule selection and segment calculation.
 2. Persistence, corrections and recalculation.
 3. OT lifecycle and payroll boundary.
 4. Configuration, presentation and E2E.
 
-For every epic, state DoR, AC, DoD, verification evidence, legacy behaviours that must remain unchanged, and only the dependencies required by that epic. Findings do not become implementation scope until accepted.
+Each step names the legacy behaviour that must stay unchanged and the test that proves it. Findings do not become steps until accepted.
 
 ## Completion boundary
 
-End after delivering the evidence, compatibility boundary, pending decisions and a reviewable tracker. Load `impact-analysis`, `implementation-tracker`, `tdd`, `frontend`, and E2E workflows only when the task advances into their respective stages.
+End after delivering the evidence, compatibility boundary, pending decisions and a reviewable plan. Load `plan`, `tdd`, and E2E workflows only when the task advances into those stages.

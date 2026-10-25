@@ -1,0 +1,21 @@
+{
+  "name": "ai-config",
+  "version": "1.0.0",
+  "description": "One set of agent rules and skills (plan, fix-bug, tdd, agent-memory, simplify) for Claude Code, Codex and Gemini/Antigravity.",
+  "bin": {
+    "ai-config": "bin/ai-config.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "AGENTS.md",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "license": "UNLICENSED"
+}

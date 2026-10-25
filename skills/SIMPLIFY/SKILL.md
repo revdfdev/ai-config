@@ -265,7 +265,7 @@ During simplification identify:
 - unnecessary serialization;
 - unbounded concurrency.
 
-If a meaningful performance issue is found, follow `PERFORMANCE.md`.
+If a meaningful performance issue is found, use the `performance` skill.
 
 Do not silently turn simplification into a large performance rewrite.
 
@@ -288,14 +288,7 @@ Do not change:
 
 unless explicitly required by another task.
 
-When behavioral changes are needed, follow:
-
-```text
-IMPACT_ANALYSIS.md
-TDD.md
-```
-
-instead of treating them as simplification.
+When behavioral changes are needed, use the `plan` and `tdd` skills instead of treating them as simplification.
 
 ---
 
@@ -592,47 +585,16 @@ Do not perform broad cleanup while trying to make the test pass.
 
 # 24. Interaction With Impact Analysis
 
-Before changing behavior:
-
-```text
-IMPACT ANALYSIS
-```
-
-Before push:
-
-```text
-VERIFY ORIGINAL IMPACT SURFACE
-```
+Before push, re-check the plan's `Touches:` line (callers, consumers, contracts).
 
 Simplification must not create a new impact surface unnecessarily.
 
 ---
 
-# 25. Interaction With Implementation Tracker
+# 25. Interaction With the Plan
 
-The tracker should record:
-
-```text
-Simplification:
-BASELINE / INCREMENTAL
-
-Status:
-PENDING / COMPLETE
-
-Findings:
-...
-
-Changes made:
-...
-
-Tests after simplification:
-...
-
-Remaining cleanup:
-...
-```
-
-Do not store verbose simplification logs.
+Tick the simplify step in the plan only with proof: the tests run after simplification and their result.
+Do not store simplification logs.
 
 ---
 

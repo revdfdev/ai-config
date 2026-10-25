@@ -1,7 +1,7 @@
 {
   "name": "merkmod",
-  "version": "1.0.0",
-  "description": "Lightweight agent rules and skills for Claude Code, Codex and Gemini: proof-gated plans instead of trackers, first-divergence bug fixing, TDD, per-repo agent memory.",
+  "version": "1.0.1",
+  "description": "Skills for Claude Code, Codex and Gemini: proof-gated plans, first-divergence bug fixing, TDD, per-repo agent memory. One command: npx merkmod setup.",
   "bin": {
     "merkmod": "bin/merkmod.js"
   },
@@ -9,7 +9,6 @@
     "bin/",
     "skills/",
     "!skills/attendance-calculation-policy-analysis/",
-    "AGENTS.md",
     "README.md",
     "LICENSE"
   ],

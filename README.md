@@ -1,14 +1,38 @@
-# ai-config
-One set of global agent rules and skills for Claude Code, Codex and Gemini/Antigravity.
+# merkmod
 
-- `AGENTS.md` - global rules, installed as `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.gemini/GEMINI.md`.
-- `skills/` - on-demand procedures, installed into `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/config/skills`:
-  `plan` (proof-gated steps, no trackers), `fix-bug` (first-divergence root cause), `tdd`, `agent-memory`
-  (per-repo `docs/agent-memory/`), `simplify`, `performance`, `attendance-calculation-policy-analysis`.
+Lightweight rules and skills for coding agents — Claude Code, Codex and Gemini/Antigravity — built around one idea:
+**reward finished, proven work, not documents about work.**
 
-## Install
-- Any machine: `npx ai-config install` (copies; `--dry-run` to preview, `status`, `uninstall`).
-- This checkout, live-editing: `./install.sh` (dry run) then `./install.sh --apply` (symlinks).
+```sh
+npx merkmod install          # copy rules + skills into all three tools
+npx merkmod install --dry-run
+npx merkmod status
+npx merkmod uninstall
+```
 
-Re-running install prunes skills removed from the package. Files you own at a target are moved to `*.bak-ai-config`, never overwritten.
-Secrets never go here: MCP tokens stay in each machine's local config / env.
+## What you get
+
+| Skill | What it does |
+|---|---|
+| `plan` | One short plan file. A step is ticked only with proof next to it (`go test … → PASS`) or marked "not verified". Deleted when done — the commit and its tests are the record. No trackers. |
+| `fix-bug` | Symptom → reproduce → **first divergence** (earliest point the value goes wrong) → confidence label (CONFIRMED / SUPPORTED / SPECULATIVE) → failing test → fix the cause → five-line report. |
+| `tdd` | Scenario list, test seen failing first, smallest change, never edit an expected value to go green. |
+| `agent-memory` | Per-repo `docs/agent-memory/` (entry `INDEX.md`): read before work, write only verified, durable facts. No session logs. |
+| `simplify` | Diff-only cleanup pass before commit; no behaviour change. |
+| `performance` | Evidence-first latency/throughput work. |
+
+Plus `AGENTS.md`, the global working rules: analyse → plan → wait for "proceed" → implement and prove.
+
+## Where it installs
+
+| Tool | Rules | Skills |
+|---|---|---|
+| Claude Code | `~/.claude/CLAUDE.md` | `~/.claude/skills/` |
+| Codex | `~/.codex/AGENTS.md` | `~/.codex/skills/` |
+| Gemini / Antigravity | `~/.gemini/GEMINI.md` | `~/.gemini/config/skills/` |
+
+- Re-running `install` updates skills and removes ones dropped from the package (tracked in `~/.merkmod/manifest.json`).
+- A file you already have at a target is moved to `*.bak-merkmod`, never overwritten. Other skills in those folders are left alone.
+- Hacking on it: clone, then `./install.sh --apply` symlinks to the checkout so edits are live.
+
+Requires Node 18+. MIT licensed.

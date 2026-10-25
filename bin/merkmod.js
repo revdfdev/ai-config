@@ -8,8 +8,8 @@ const os = require("os");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
-const HOME = process.env.AI_CONFIG_HOME || os.homedir();
-const MANIFEST = path.join(HOME, ".ai-config", "manifest.json");
+const HOME = process.env.MERKMOD_HOME || os.homedir();
+const MANIFEST = path.join(HOME, ".merkmod", "manifest.json");
 const RULE_TARGETS = [".claude/CLAUDE.md", ".codex/AGENTS.md", ".gemini/GEMINI.md"];
 const SKILL_DIRS = [".claude/skills", ".codex/skills", ".gemini/config/skills"];
 
@@ -60,8 +60,8 @@ function clear(target, owned) {
   if (st.isSymbolicLink() || owned.has(target)) {
     fs.rmSync(target, { recursive: true, force: true });
   } else {
-    fs.renameSync(target, `${target}.bak-ai-config`);
-    log("backup", target, `-> ${target}.bak-ai-config`);
+    fs.renameSync(target, `${target}.bak-merkmod`);
+    log("backup", target, `-> ${target}.bak-merkmod`);
   }
 }
 
@@ -136,7 +136,7 @@ function uninstall() {
   const { paths } = readManifest();
   remove(paths);
   if (!dryRun) fs.rmSync(MANIFEST, { force: true });
-  console.log(dryRun ? "(dry run - nothing changed)" : "uninstalled; *.bak-ai-config backups were left in place");
+  console.log(dryRun ? "(dry run - nothing changed)" : "uninstalled; *.bak-merkmod backups were left in place");
 }
 
 function status() {
@@ -151,7 +151,7 @@ function status() {
 
 const commands = { install, uninstall, status };
 if (!commands[command]) {
-  console.log(`usage: ai-config <install|uninstall|status> [--dry-run] [--link]
+  console.log(`usage: merkmod <install|uninstall|status> [--dry-run] [--link]
   install    copy AGENTS.md and skills into ~/.claude, ~/.codex, ~/.gemini (prunes removed skills)
   uninstall  remove everything the last install put there
   status     show what is installed

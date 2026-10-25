@@ -1,15 +1,17 @@
 {
-  "name": "ai-config",
+  "name": "merkmod",
   "version": "1.0.0",
-  "description": "One set of agent rules and skills (plan, fix-bug, tdd, agent-memory, simplify) for Claude Code, Codex and Gemini/Antigravity.",
+  "description": "Lightweight agent rules and skills for Claude Code, Codex and Gemini: proof-gated plans instead of trackers, first-divergence bug fixing, TDD, per-repo agent memory.",
   "bin": {
-    "ai-config": "bin/ai-config.js"
+    "merkmod": "bin/merkmod.js"
   },
   "files": [
     "bin/",
     "skills/",
+    "!skills/attendance-calculation-policy-analysis/",
     "AGENTS.md",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=18"
@@ -17,5 +19,15 @@
   "scripts": {
     "test": "node --test test/*.test.js"
   },
-  "license": "UNLICENSED"
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "codex",
+    "gemini",
+    "antigravity",
+    "agent-skills",
+    "skills",
+    "tdd",
+    "root-cause"
+  ]
 }

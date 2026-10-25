@@ -7,7 +7,7 @@ const path = require("path");
 const { execFileSync } = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");
-const CLI = path.join(ROOT, "bin", "ai-config.js");
+const CLI = path.join(ROOT, "bin", "merkmod.js");
 const SKILL_DIRS = [".claude/skills", ".codex/skills", ".gemini/config/skills"];
 const RULES = [".claude/CLAUDE.md", ".codex/AGENTS.md", ".gemini/GEMINI.md"];
 
@@ -16,7 +16,7 @@ function freshHome() {
 }
 
 function run(home, ...args) {
-  return execFileSync("node", [CLI, ...args], { env: { ...process.env, AI_CONFIG_HOME: home }, encoding: "utf8" });
+  return execFileSync("node", [CLI, ...args], { env: { ...process.env, MERKMOD_HOME: home }, encoding: "utf8" });
 }
 
 function skillNames() {
@@ -51,7 +51,7 @@ test("a skill dropped from the package is pruned on the next install", () => {
   run(home, "install");
   const stale = path.join(home, ".codex/skills/implementation-tracker");
   fs.mkdirSync(stale, { recursive: true });
-  const manifestPath = path.join(home, ".ai-config/manifest.json");
+  const manifestPath = path.join(home, ".merkmod/manifest.json");
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   manifest.paths.push(stale);
   fs.writeFileSync(manifestPath, JSON.stringify(manifest));
@@ -73,7 +73,7 @@ test("a user's own file at a target is backed up, not overwritten", () => {
   fs.mkdirSync(path.join(home, ".codex"), { recursive: true });
   fs.writeFileSync(path.join(home, ".codex/AGENTS.md"), "mine");
   run(home, "install");
-  assert.strictEqual(fs.readFileSync(path.join(home, ".codex/AGENTS.md.bak-ai-config"), "utf8"), "mine");
+  assert.strictEqual(fs.readFileSync(path.join(home, ".codex/AGENTS.md.bak-merkmod"), "utf8"), "mine");
 });
 
 test("skills the package does not own are left alone", () => {

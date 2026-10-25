@@ -54,5 +54,5 @@ Live code beats memory. If they conflict, say so; update memory only after the n
 - Don't spawn subagents unless asked or the task is clearly parallel research.
 
 ## Skills (load on demand, not by default)
-`plan`, `fix-bug`, `tdd`, `simplify`, `agent-memory`, `performance`, `attendance-calculation-policy-analysis`; `frontend` and `playbooks` when the workspace provides them.
+`plan`, `fix-bug`, `tdd`, `simplify`, `agent-memory`, `performance`; plus any project skills the workspace provides.
 Routing: bug → fix-bug (+ tdd for backend). Change → plan + tdd (backend) or plan + E2E (frontend). Before commit → simplify. Learned a durable fact → agent-memory. Slow/timeouts → performance.
